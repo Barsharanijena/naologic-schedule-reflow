@@ -1,0 +1,419 @@
+{
+  "workOrders": [
+    {
+      "docId": "wo-contention-1",
+      "docType": "workOrder",
+      "data": {
+        "workOrderNumber": "WO-CONTENTION-1",
+        "manufacturingOrderId": "mo-contention-1",
+        "workCenterId": "wc-bottleneck",
+        "startDate": "2026-02-10T08:00:00.000Z",
+        "endDate": "2026-02-10T10:00:00.000Z",
+        "durationMinutes": 120,
+        "isMaintenance": false,
+        "dependsOnWorkOrderIds": [],
+        "description": "CONTENTION: First job on bottleneck work center"
+      }
+    },
+    {
+      "docId": "wo-contention-2",
+      "docType": "workOrder",
+      "data": {
+        "workOrderNumber": "WO-CONTENTION-2",
+        "manufacturingOrderId": "mo-contention-2",
+        "workCenterId": "wc-bottleneck",
+        "startDate": "2026-02-10T08:00:00.000Z",
+        "endDate": "2026-02-10T10:30:00.000Z",
+        "durationMinutes": 150,
+        "isMaintenance": false,
+        "dependsOnWorkOrderIds": [],
+        "description": "CONTENTION: Conflicts with WO-1 - same start time, needs rescheduling"
+      }
+    },
+    {
+      "docId": "wo-contention-3",
+      "docType": "workOrder",
+      "data": {
+        "workOrderNumber": "WO-CONTENTION-3",
+        "manufacturingOrderId": "mo-contention-3",
+        "workCenterId": "wc-bottleneck",
+        "startDate": "2026-02-10T09:00:00.000Z",
+        "endDate": "2026-02-10T11:00:00.000Z",
+        "durationMinutes": 120,
+        "isMaintenance": false,
+        "dependsOnWorkOrderIds": [],
+        "description": "CONTENTION: Overlaps with WO-1 and WO-2"
+      }
+    },
+    {
+      "docId": "wo-contention-4",
+      "docType": "workOrder",
+      "data": {
+        "workOrderNumber": "WO-CONTENTION-4",
+        "manufacturingOrderId": "mo-contention-4",
+        "workCenterId": "wc-bottleneck",
+        "startDate": "2026-02-10T09:30:00.000Z",
+        "endDate": "2026-02-10T12:00:00.000Z",
+        "durationMinutes": 150,
+        "isMaintenance": false,
+        "dependsOnWorkOrderIds": [],
+        "description": "CONTENTION: Overlaps with WO-2 and WO-3"
+      }
+    },
+    {
+      "docId": "wo-contention-5",
+      "docType": "workOrder",
+      "data": {
+        "workOrderNumber": "WO-CONTENTION-5",
+        "manufacturingOrderId": "mo-contention-5",
+        "workCenterId": "wc-bottleneck",
+        "startDate": "2026-02-10T10:00:00.000Z",
+        "endDate": "2026-02-10T12:30:00.000Z",
+        "durationMinutes": 150,
+        "isMaintenance": false,
+        "dependsOnWorkOrderIds": [],
+        "description": "CONTENTION: Fifth job competing for same work center"
+      }
+    },
+    {
+      "docId": "wo-contention-6",
+      "docType": "workOrder",
+      "data": {
+        "workOrderNumber": "WO-CONTENTION-6",
+        "manufacturingOrderId": "mo-contention-6",
+        "workCenterId": "wc-bottleneck",
+        "startDate": "2026-02-10T11:00:00.000Z",
+        "endDate": "2026-02-10T13:00:00.000Z",
+        "durationMinutes": 120,
+        "isMaintenance": false,
+        "dependsOnWorkOrderIds": [],
+        "description": "CONTENTION: Sixth job competing for same work center"
+      }
+    },
+    {
+      "docId": "wo-contention-7",
+      "docType": "workOrder",
+      "data": {
+        "workOrderNumber": "WO-CONTENTION-7",
+        "manufacturingOrderId": "mo-contention-7",
+        "workCenterId": "wc-bottleneck",
+        "startDate": "2026-02-10T12:00:00.000Z",
+        "endDate": "2026-02-10T14:00:00.000Z",
+        "durationMinutes": 120,
+        "isMaintenance": false,
+        "dependsOnWorkOrderIds": [],
+        "description": "CONTENTION: Seventh job competing for same work center"
+      }
+    },
+    {
+      "docId": "wo-contention-8",
+      "docType": "workOrder",
+      "data": {
+        "workOrderNumber": "WO-CONTENTION-8",
+        "manufacturingOrderId": "mo-contention-8",
+        "workCenterId": "wc-bottleneck",
+        "startDate": "2026-02-10T13:00:00.000Z",
+        "endDate": "2026-02-10T15:00:00.000Z",
+        "durationMinutes": 120,
+        "isMaintenance": false,
+        "dependsOnWorkOrderIds": [],
+        "description": "CONTENTION: Eighth job - may need to spill to next day"
+      }
+    },
+    {
+      "docId": "wo-maintenance-slot",
+      "docType": "workOrder",
+      "data": {
+        "workOrderNumber": "WO-MAINTENANCE",
+        "manufacturingOrderId": "mo-maintenance",
+        "workCenterId": "wc-bottleneck",
+        "startDate": "2026-02-10T13:00:00.000Z",
+        "endDate": "2026-02-10T14:00:00.000Z",
+        "durationMinutes": 60,
+        "isMaintenance": true,
+        "dependsOnWorkOrderIds": [],
+        "description": "IMMOVABLE: Maintenance window adds to contention - all work must flow around this"
+      }
+    },
+    {
+      "docId": "wo-dependency-contention-1",
+      "docType": "workOrder",
+      "data": {
+        "workOrderNumber": "WO-DEP-CONTENTION-1",
+        "manufacturingOrderId": "mo-dep-contention",
+        "workCenterId": "wc-prep",
+        "startDate": "2026-02-10T08:00:00.000Z",
+        "endDate": "2026-02-10T10:00:00.000Z",
+        "durationMinutes": 120,
+        "isMaintenance": false,
+        "dependsOnWorkOrderIds": [],
+        "description": "PREP WORK: Feeds into bottleneck work center"
+      }
+    },
+    {
+      "docId": "wo-dependency-contention-2",
+      "docType": "workOrder",
+      "data": {
+        "workOrderNumber": "WO-DEP-CONTENTION-2",
+        "manufacturingOrderId": "mo-dep-contention",
+        "workCenterId": "wc-bottleneck",
+        "startDate": "2026-02-10T10:00:00.000Z",
+        "endDate": "2026-02-10T12:00:00.000Z",
+        "durationMinutes": 120,
+        "isMaintenance": false,
+        "dependsOnWorkOrderIds": ["wo-dependency-contention-1"],
+        "description": "DEPENDENT: Waits for prep work, then competes for bottleneck with 8 other jobs"
+      }
+    },
+    {
+      "docId": "wo-multi-center-1",
+      "docType": "workOrder",
+      "data": {
+        "workOrderNumber": "WO-MULTI-1",
+        "manufacturingOrderId": "mo-multi-center",
+        "workCenterId": "wc-step-1",
+        "startDate": "2026-02-10T08:00:00.000Z",
+        "endDate": "2026-02-10T10:00:00.000Z",
+        "durationMinutes": 120,
+        "isMaintenance": false,
+        "dependsOnWorkOrderIds": [],
+        "description": "MULTI-STEP: Step 1 of 3-stage process"
+      }
+    },
+    {
+      "docId": "wo-multi-center-2",
+      "docType": "workOrder",
+      "data": {
+        "workOrderNumber": "WO-MULTI-2",
+        "manufacturingOrderId": "mo-multi-center",
+        "workCenterId": "wc-bottleneck",
+        "startDate": "2026-02-10T10:00:00.000Z",
+        "endDate": "2026-02-10T12:00:00.000Z",
+        "durationMinutes": 120,
+        "isMaintenance": false,
+        "dependsOnWorkOrderIds": ["wo-multi-center-1"],
+        "description": "MULTI-STEP: Step 2 hits bottleneck work center"
+      }
+    },
+    {
+      "docId": "wo-multi-center-3",
+      "docType": "workOrder",
+      "data": {
+        "workOrderNumber": "WO-MULTI-3",
+        "manufacturingOrderId": "mo-multi-center",
+        "workCenterId": "wc-finish",
+        "startDate": "2026-02-10T12:00:00.000Z",
+        "endDate": "2026-02-10T14:00:00.000Z",
+        "durationMinutes": 120,
+        "isMaintenance": false,
+        "dependsOnWorkOrderIds": ["wo-multi-center-2"],
+        "description": "MULTI-STEP: Step 3 finishing work - cascades if step 2 delayed by contention"
+      }
+    },
+    {
+      "docId": "wo-high-priority",
+      "docType": "workOrder",
+      "data": {
+        "workOrderNumber": "WO-HIGH-PRIORITY",
+        "manufacturingOrderId": "mo-urgent",
+        "workCenterId": "wc-bottleneck",
+        "startDate": "2026-02-10T14:00:00.000Z",
+        "endDate": "2026-02-10T16:00:00.000Z",
+        "durationMinutes": 120,
+        "isMaintenance": false,
+        "dependsOnWorkOrderIds": [],
+        "description": "URGENT: High-priority order with tight due date - scheduler should prioritize"
+      }
+    }
+  ],
+  "workCenters": [
+    {
+      "docId": "wc-bottleneck",
+      "docType": "workCenter",
+      "data": {
+        "name": "Bottleneck Work Center (HIGH CONTENTION)",
+        "shifts": [
+          { "dayOfWeek": 1, "startHour": 8, "endHour": 17 },
+          { "dayOfWeek": 2, "startHour": 8, "endHour": 17 },
+          { "dayOfWeek": 3, "startHour": 8, "endHour": 17 },
+          { "dayOfWeek": 4, "startHour": 8, "endHour": 17 },
+          { "dayOfWeek": 5, "startHour": 8, "endHour": 17 }
+        ],
+        "maintenanceWindows": [
+          {
+            "startDate": "2026-02-10T13:00:00.000Z",
+            "endDate": "2026-02-10T14:00:00.000Z"
+          }
+        ]
+      }
+    },
+    {
+      "docId": "wc-prep",
+      "docType": "workCenter",
+      "data": {
+        "name": "Preparation Station",
+        "shifts": [
+          { "dayOfWeek": 1, "startHour": 8, "endHour": 17 },
+          { "dayOfWeek": 2, "startHour": 8, "endHour": 17 },
+          { "dayOfWeek": 3, "startHour": 8, "endHour": 17 },
+          { "dayOfWeek": 4, "startHour": 8, "endHour": 17 },
+          { "dayOfWeek": 5, "startHour": 8, "endHour": 17 }
+        ],
+        "maintenanceWindows": []
+      }
+    },
+    {
+      "docId": "wc-step-1",
+      "docType": "workCenter",
+      "data": {
+        "name": "Processing Stage 1",
+        "shifts": [
+          { "dayOfWeek": 1, "startHour": 8, "endHour": 17 },
+          { "dayOfWeek": 2, "startHour": 8, "endHour": 17 },
+          { "dayOfWeek": 3, "startHour": 8, "endHour": 17 },
+          { "dayOfWeek": 4, "startHour": 8, "endHour": 17 },
+          { "dayOfWeek": 5, "startHour": 8, "endHour": 17 }
+        ],
+        "maintenanceWindows": []
+      }
+    },
+    {
+      "docId": "wc-finish",
+      "docType": "workCenter",
+      "data": {
+        "name": "Finishing Station",
+        "shifts": [
+          { "dayOfWeek": 1, "startHour": 8, "endHour": 17 },
+          { "dayOfWeek": 2, "startHour": 8, "endHour": 17 },
+          { "dayOfWeek": 3, "startHour": 8, "endHour": 17 },
+          { "dayOfWeek": 4, "startHour": 8, "endHour": 17 },
+          { "dayOfWeek": 5, "startHour": 8, "endHour": 17 }
+        ],
+        "maintenanceWindows": []
+      }
+    }
+  ],
+  "manufacturingOrders": [
+    {
+      "docId": "mo-contention-1",
+      "docType": "manufacturingOrder",
+      "data": {
+        "manufacturingOrderNumber": "MO-CONTENTION-1",
+        "itemId": "PRODUCT-A",
+        "quantity": 100,
+        "dueDate": "2026-02-12T17:00:00.000Z"
+      }
+    },
+    {
+      "docId": "mo-contention-2",
+      "docType": "manufacturingOrder",
+      "data": {
+        "manufacturingOrderNumber": "MO-CONTENTION-2",
+        "itemId": "PRODUCT-B",
+        "quantity": 150,
+        "dueDate": "2026-02-12T17:00:00.000Z"
+      }
+    },
+    {
+      "docId": "mo-contention-3",
+      "docType": "manufacturingOrder",
+      "data": {
+        "manufacturingOrderNumber": "MO-CONTENTION-3",
+        "itemId": "PRODUCT-C",
+        "quantity": 120,
+        "dueDate": "2026-02-12T17:00:00.000Z"
+      }
+    },
+    {
+      "docId": "mo-contention-4",
+      "docType": "manufacturingOrder",
+      "data": {
+        "manufacturingOrderNumber": "MO-CONTENTION-4",
+        "itemId": "PRODUCT-D",
+        "quantity": 200,
+        "dueDate": "2026-02-12T17:00:00.000Z"
+      }
+    },
+    {
+      "docId": "mo-contention-5",
+      "docType": "manufacturingOrder",
+      "data": {
+        "manufacturingOrderNumber": "MO-CONTENTION-5",
+        "itemId": "PRODUCT-E",
+        "quantity": 80,
+        "dueDate": "2026-02-12T17:00:00.000Z"
+      }
+    },
+    {
+      "docId": "mo-contention-6",
+      "docType": "manufacturingOrder",
+      "data": {
+        "manufacturingOrderNumber": "MO-CONTENTION-6",
+        "itemId": "PRODUCT-F",
+        "quantity": 90,
+        "dueDate": "2026-02-12T17:00:00.000Z"
+      }
+    },
+    {
+      "docId": "mo-contention-7",
+      "docType": "manufacturingOrder",
+      "data": {
+        "manufacturingOrderNumber": "MO-CONTENTION-7",
+        "itemId": "PRODUCT-G",
+        "quantity": 110,
+        "dueDate": "2026-02-12T17:00:00.000Z"
+      }
+    },
+    {
+      "docId": "mo-contention-8",
+      "docType": "manufacturingOrder",
+      "data": {
+        "manufacturingOrderNumber": "MO-CONTENTION-8",
+        "itemId": "PRODUCT-H",
+        "quantity": 130,
+        "dueDate": "2026-02-13T17:00:00.000Z"
+      }
+    },
+    {
+      "docId": "mo-maintenance",
+      "docType": "manufacturingOrder",
+      "data": {
+        "manufacturingOrderNumber": "MO-MAINTENANCE",
+        "itemId": "MAINTENANCE",
+        "quantity": 1,
+        "dueDate": "2026-02-10T14:00:00.000Z"
+      }
+    },
+    {
+      "docId": "mo-dep-contention",
+      "docType": "manufacturingOrder",
+      "data": {
+        "manufacturingOrderNumber": "MO-DEP-CONTENTION",
+        "itemId": "DEPENDENT-PRODUCT",
+        "quantity": 100,
+        "dueDate": "2026-02-12T17:00:00.000Z"
+      }
+    },
+    {
+      "docId": "mo-multi-center",
+      "docType": "manufacturingOrder",
+      "data": {
+        "manufacturingOrderNumber": "MO-MULTI-CENTER",
+        "itemId": "MULTI-STAGE-PRODUCT",
+        "quantity": 50,
+        "dueDate": "2026-02-13T17:00:00.000Z"
+      }
+    },
+    {
+      "docId": "mo-urgent",
+      "docType": "manufacturingOrder",
+      "data": {
+        "manufacturingOrderNumber": "MO-URGENT",
+        "itemId": "HIGH-PRIORITY-RUSH",
+        "quantity": 10,
+        "dueDate": "2026-02-11T12:00:00.000Z",
+        "description": "URGENT: Tight due date - test scheduler prioritization"
+      }
+    }
+  ]
+}

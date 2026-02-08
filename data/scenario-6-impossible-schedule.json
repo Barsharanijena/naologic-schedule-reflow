@@ -1,0 +1,334 @@
+{
+  "workOrders": [
+    {
+      "docId": "wo-circular-a",
+      "docType": "workOrder",
+      "data": {
+        "workOrderNumber": "WO-CIRCULAR-A",
+        "manufacturingOrderId": "mo-impossible-1",
+        "workCenterId": "wc-test-1",
+        "startDate": "2026-02-10T08:00:00.000Z",
+        "endDate": "2026-02-10T10:00:00.000Z",
+        "durationMinutes": 120,
+        "isMaintenance": false,
+        "dependsOnWorkOrderIds": ["wo-circular-c"],
+        "description": "IMPOSSIBLE: Part of circular dependency A→B→C→A"
+      }
+    },
+    {
+      "docId": "wo-circular-b",
+      "docType": "workOrder",
+      "data": {
+        "workOrderNumber": "WO-CIRCULAR-B",
+        "manufacturingOrderId": "mo-impossible-1",
+        "workCenterId": "wc-test-2",
+        "startDate": "2026-02-10T10:00:00.000Z",
+        "endDate": "2026-02-10T12:00:00.000Z",
+        "durationMinutes": 120,
+        "isMaintenance": false,
+        "dependsOnWorkOrderIds": ["wo-circular-a"],
+        "description": "IMPOSSIBLE: Part of circular dependency A→B→C→A"
+      }
+    },
+    {
+      "docId": "wo-circular-c",
+      "docType": "workOrder",
+      "data": {
+        "workOrderNumber": "WO-CIRCULAR-C",
+        "manufacturingOrderId": "mo-impossible-1",
+        "workCenterId": "wc-test-3",
+        "startDate": "2026-02-10T12:00:00.000Z",
+        "endDate": "2026-02-10T14:00:00.000Z",
+        "durationMinutes": 120,
+        "isMaintenance": false,
+        "dependsOnWorkOrderIds": ["wo-circular-b"],
+        "description": "IMPOSSIBLE: Part of circular dependency A→B→C→A"
+      }
+    },
+    {
+      "docId": "wo-maintenance-blocker",
+      "docType": "workOrder",
+      "data": {
+        "workOrderNumber": "WO-MAINTENANCE",
+        "manufacturingOrderId": "mo-impossible-2",
+        "workCenterId": "wc-extrusion-1",
+        "startDate": "2026-02-10T13:00:00.000Z",
+        "endDate": "2026-02-10T15:00:00.000Z",
+        "durationMinutes": 120,
+        "isMaintenance": true,
+        "dependsOnWorkOrderIds": [],
+        "description": "IMMOVABLE: Maintenance window that cannot be rescheduled"
+      }
+    },
+    {
+      "docId": "wo-conflicts-maintenance",
+      "docType": "workOrder",
+      "data": {
+        "workOrderNumber": "WO-CONFLICT",
+        "manufacturingOrderId": "mo-impossible-2",
+        "workCenterId": "wc-extrusion-1",
+        "startDate": "2026-02-10T13:30:00.000Z",
+        "endDate": "2026-02-10T15:30:00.000Z",
+        "durationMinutes": 120,
+        "isMaintenance": false,
+        "dependsOnWorkOrderIds": [],
+        "description": "IMPOSSIBLE: Overlaps with immovable maintenance window"
+      }
+    },
+    {
+      "docId": "wo-late-start",
+      "docType": "workOrder",
+      "data": {
+        "workOrderNumber": "WO-LATE-START",
+        "manufacturingOrderId": "mo-impossible-3",
+        "workCenterId": "wc-assembly-1",
+        "startDate": "2026-02-10T16:00:00.000Z",
+        "endDate": "2026-02-10T20:00:00.000Z",
+        "durationMinutes": 240,
+        "isMaintenance": false,
+        "dependsOnWorkOrderIds": [],
+        "description": "IMPOSSIBLE: 4-hour job starting at 4 PM but shift ends at 5 PM - cannot complete same day"
+      }
+    },
+    {
+      "docId": "wo-delayed-past-due",
+      "docType": "workOrder",
+      "data": {
+        "workOrderNumber": "WO-DELAYED-PAST-DUE",
+        "manufacturingOrderId": "mo-impossible-4",
+        "workCenterId": "wc-packaging-1",
+        "startDate": "2026-02-10T08:00:00.000Z",
+        "endDate": "2026-02-10T16:00:00.000Z",
+        "durationMinutes": 480,
+        "isMaintenance": false,
+        "dependsOnWorkOrderIds": [],
+        "description": "8-hour job that will miss due date of 2026-02-10T12:00:00Z"
+      }
+    },
+    {
+      "docId": "wo-outside-shifts-1",
+      "docType": "workOrder",
+      "data": {
+        "workOrderNumber": "WO-OUTSIDE-SHIFTS",
+        "manufacturingOrderId": "mo-impossible-5",
+        "workCenterId": "wc-cutting-1",
+        "startDate": "2026-02-08T10:00:00.000Z",
+        "endDate": "2026-02-08T12:00:00.000Z",
+        "durationMinutes": 120,
+        "isMaintenance": false,
+        "dependsOnWorkOrderIds": [],
+        "description": "IMPOSSIBLE: Scheduled on Saturday when work center only operates Mon-Fri"
+      }
+    },
+    {
+      "docId": "wo-impossible-chain-1",
+      "docType": "workOrder",
+      "data": {
+        "workOrderNumber": "WO-CHAIN-1",
+        "manufacturingOrderId": "mo-impossible-6",
+        "workCenterId": "wc-extrusion-1",
+        "startDate": "2026-02-10T15:00:00.000Z",
+        "endDate": "2026-02-10T17:00:00.000Z",
+        "durationMinutes": 120,
+        "isMaintenance": false,
+        "dependsOnWorkOrderIds": [],
+        "description": "IMPOSSIBLE CHAIN: Starts at 3 PM (only 2 hours left in shift)"
+      }
+    },
+    {
+      "docId": "wo-impossible-chain-2",
+      "docType": "workOrder",
+      "data": {
+        "workOrderNumber": "WO-CHAIN-2",
+        "manufacturingOrderId": "mo-impossible-6",
+        "workCenterId": "wc-cutting-1",
+        "startDate": "2026-02-10T17:00:00.000Z",
+        "endDate": "2026-02-10T19:00:00.000Z",
+        "durationMinutes": 120,
+        "isMaintenance": false,
+        "dependsOnWorkOrderIds": ["wo-impossible-chain-1"],
+        "description": "IMPOSSIBLE CHAIN: Depends on chain-1 but scheduled outside shift hours"
+      }
+    }
+  ],
+  "workCenters": [
+    {
+      "docId": "wc-test-1",
+      "docType": "workCenter",
+      "data": {
+        "name": "Test Station 1",
+        "shifts": [
+          { "dayOfWeek": 1, "startHour": 8, "endHour": 17 },
+          { "dayOfWeek": 2, "startHour": 8, "endHour": 17 },
+          { "dayOfWeek": 3, "startHour": 8, "endHour": 17 },
+          { "dayOfWeek": 4, "startHour": 8, "endHour": 17 },
+          { "dayOfWeek": 5, "startHour": 8, "endHour": 17 }
+        ],
+        "maintenanceWindows": []
+      }
+    },
+    {
+      "docId": "wc-test-2",
+      "docType": "workCenter",
+      "data": {
+        "name": "Test Station 2",
+        "shifts": [
+          { "dayOfWeek": 1, "startHour": 8, "endHour": 17 },
+          { "dayOfWeek": 2, "startHour": 8, "endHour": 17 },
+          { "dayOfWeek": 3, "startHour": 8, "endHour": 17 },
+          { "dayOfWeek": 4, "startHour": 8, "endHour": 17 },
+          { "dayOfWeek": 5, "startHour": 8, "endHour": 17 }
+        ],
+        "maintenanceWindows": []
+      }
+    },
+    {
+      "docId": "wc-test-3",
+      "docType": "workCenter",
+      "data": {
+        "name": "Test Station 3",
+        "shifts": [
+          { "dayOfWeek": 1, "startHour": 8, "endHour": 17 },
+          { "dayOfWeek": 2, "startHour": 8, "endHour": 17 },
+          { "dayOfWeek": 3, "startHour": 8, "endHour": 17 },
+          { "dayOfWeek": 4, "startHour": 8, "endHour": 17 },
+          { "dayOfWeek": 5, "startHour": 8, "endHour": 17 }
+        ],
+        "maintenanceWindows": []
+      }
+    },
+    {
+      "docId": "wc-extrusion-1",
+      "docType": "workCenter",
+      "data": {
+        "name": "Extrusion Line 1",
+        "shifts": [
+          { "dayOfWeek": 1, "startHour": 8, "endHour": 17 },
+          { "dayOfWeek": 2, "startHour": 8, "endHour": 17 },
+          { "dayOfWeek": 3, "startHour": 8, "endHour": 17 },
+          { "dayOfWeek": 4, "startHour": 8, "endHour": 17 },
+          { "dayOfWeek": 5, "startHour": 8, "endHour": 17 }
+        ],
+        "maintenanceWindows": [
+          {
+            "startDate": "2026-02-10T13:00:00.000Z",
+            "endDate": "2026-02-10T15:00:00.000Z"
+          }
+        ]
+      }
+    },
+    {
+      "docId": "wc-assembly-1",
+      "docType": "workCenter",
+      "data": {
+        "name": "Assembly Station 1",
+        "shifts": [
+          { "dayOfWeek": 1, "startHour": 8, "endHour": 17 },
+          { "dayOfWeek": 2, "startHour": 8, "endHour": 17 },
+          { "dayOfWeek": 3, "startHour": 8, "endHour": 17 },
+          { "dayOfWeek": 4, "startHour": 8, "endHour": 17 },
+          { "dayOfWeek": 5, "startHour": 8, "endHour": 17 }
+        ],
+        "maintenanceWindows": []
+      }
+    },
+    {
+      "docId": "wc-packaging-1",
+      "docType": "workCenter",
+      "data": {
+        "name": "Packaging Line 1",
+        "shifts": [
+          { "dayOfWeek": 1, "startHour": 8, "endHour": 17 },
+          { "dayOfWeek": 2, "startHour": 8, "endHour": 17 },
+          { "dayOfWeek": 3, "startHour": 8, "endHour": 17 },
+          { "dayOfWeek": 4, "startHour": 8, "endHour": 17 },
+          { "dayOfWeek": 5, "startHour": 8, "endHour": 17 }
+        ],
+        "maintenanceWindows": []
+      }
+    },
+    {
+      "docId": "wc-cutting-1",
+      "docType": "workCenter",
+      "data": {
+        "name": "Cutting Station 1",
+        "shifts": [
+          { "dayOfWeek": 1, "startHour": 8, "endHour": 17 },
+          { "dayOfWeek": 2, "startHour": 8, "endHour": 17 },
+          { "dayOfWeek": 3, "startHour": 8, "endHour": 17 },
+          { "dayOfWeek": 4, "startHour": 8, "endHour": 17 },
+          { "dayOfWeek": 5, "startHour": 8, "endHour": 17 }
+        ],
+        "maintenanceWindows": []
+      }
+    }
+  ],
+  "manufacturingOrders": [
+    {
+      "docId": "mo-impossible-1",
+      "docType": "manufacturingOrder",
+      "data": {
+        "manufacturingOrderNumber": "MO-IMPOSSIBLE-1",
+        "itemId": "CIRCULAR-TEST",
+        "quantity": 1,
+        "dueDate": "2026-02-15T17:00:00.000Z",
+        "description": "Tests circular dependency detection"
+      }
+    },
+    {
+      "docId": "mo-impossible-2",
+      "docType": "manufacturingOrder",
+      "data": {
+        "manufacturingOrderNumber": "MO-IMPOSSIBLE-2",
+        "itemId": "MAINTENANCE-CONFLICT",
+        "quantity": 1,
+        "dueDate": "2026-02-15T17:00:00.000Z",
+        "description": "Tests immovable maintenance window conflicts"
+      }
+    },
+    {
+      "docId": "mo-impossible-3",
+      "docType": "manufacturingOrder",
+      "data": {
+        "manufacturingOrderNumber": "MO-IMPOSSIBLE-3",
+        "itemId": "SHIFT-OVERFLOW",
+        "quantity": 1,
+        "dueDate": "2026-02-15T17:00:00.000Z",
+        "description": "Tests work that cannot fit in remaining shift time"
+      }
+    },
+    {
+      "docId": "mo-impossible-4",
+      "docType": "manufacturingOrder",
+      "data": {
+        "manufacturingOrderNumber": "MO-IMPOSSIBLE-4",
+        "itemId": "PAST-DUE",
+        "quantity": 1,
+        "dueDate": "2026-02-10T12:00:00.000Z",
+        "description": "Tests work that will miss its due date"
+      }
+    },
+    {
+      "docId": "mo-impossible-5",
+      "docType": "manufacturingOrder",
+      "data": {
+        "manufacturingOrderNumber": "MO-IMPOSSIBLE-5",
+        "itemId": "WEEKEND-WORK",
+        "quantity": 1,
+        "dueDate": "2026-02-15T17:00:00.000Z",
+        "description": "Tests work scheduled outside available shifts"
+      }
+    },
+    {
+      "docId": "mo-impossible-6",
+      "docType": "manufacturingOrder",
+      "data": {
+        "manufacturingOrderNumber": "MO-IMPOSSIBLE-6",
+        "itemId": "CHAIN-OVERFLOW",
+        "quantity": 1,
+        "dueDate": "2026-02-15T17:00:00.000Z",
+        "description": "Tests dependency chain that cannot fit in shifts"
+      }
+    }
+  ]
+}

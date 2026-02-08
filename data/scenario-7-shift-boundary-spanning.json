@@ -1,0 +1,418 @@
+{
+  "workOrders": [
+    {
+      "docId": "wo-single-day-span",
+      "docType": "workOrder",
+      "data": {
+        "workOrderNumber": "WO-SINGLE-SPAN",
+        "manufacturingOrderId": "mo-span-1",
+        "workCenterId": "wc-extrusion-1",
+        "startDate": "2026-02-10T15:00:00.000Z",
+        "endDate": "2026-02-10T19:00:00.000Z",
+        "durationMinutes": 240,
+        "isMaintenance": false,
+        "dependsOnWorkOrderIds": [],
+        "description": "SPAN TEST: 4-hour job starting at 3 PM (shift ends 5 PM) - must pause and resume next day at 8 AM"
+      }
+    },
+    {
+      "docId": "wo-multi-day-span",
+      "docType": "workOrder",
+      "data": {
+        "workOrderNumber": "WO-MULTI-SPAN",
+        "manufacturingOrderId": "mo-span-2",
+        "workCenterId": "wc-assembly-1",
+        "startDate": "2026-02-10T14:00:00.000Z",
+        "endDate": "2026-02-11T11:00:00.000Z",
+        "durationMinutes": 600,
+        "isMaintenance": false,
+        "dependsOnWorkOrderIds": [],
+        "description": "SPAN TEST: 10-hour job (3h day 1: 2-5 PM, 7h day 2: 8 AM-3 PM) - spans multiple shifts"
+      }
+    },
+    {
+      "docId": "wo-weekend-span",
+      "docType": "workOrder",
+      "data": {
+        "workOrderNumber": "WO-WEEKEND-SPAN",
+        "manufacturingOrderId": "mo-span-3",
+        "workCenterId": "wc-cutting-1",
+        "startDate": "2026-02-14T15:00:00.000Z",
+        "endDate": "2026-02-17T10:00:00.000Z",
+        "durationMinutes": 360,
+        "isMaintenance": false,
+        "dependsOnWorkOrderIds": [],
+        "description": "SPAN TEST: 6-hour job starting Friday 3 PM - must skip weekend, resume Monday 8 AM"
+      }
+    },
+    {
+      "docId": "wo-short-remaining-time",
+      "docType": "workOrder",
+      "data": {
+        "workOrderNumber": "WO-SHORT-TIME",
+        "manufacturingOrderId": "mo-span-4",
+        "workCenterId": "wc-packaging-1",
+        "startDate": "2026-02-10T16:45:00.000Z",
+        "endDate": "2026-02-10T18:00:00.000Z",
+        "durationMinutes": 75,
+        "isMaintenance": false,
+        "dependsOnWorkOrderIds": [],
+        "description": "SPAN TEST: 75-minute job at 4:45 PM (only 15 min before shift ends) - must pause"
+      }
+    },
+    {
+      "docId": "wo-cascade-span-1",
+      "docType": "workOrder",
+      "data": {
+        "workOrderNumber": "WO-CASCADE-SPAN-1",
+        "manufacturingOrderId": "mo-span-5",
+        "workCenterId": "wc-molding-1",
+        "startDate": "2026-02-10T14:00:00.000Z",
+        "endDate": "2026-02-10T18:00:00.000Z",
+        "durationMinutes": 240,
+        "isMaintenance": false,
+        "dependsOnWorkOrderIds": [],
+        "description": "CASCADE SPAN: 4-hour job starting 2 PM - spans to next day"
+      }
+    },
+    {
+      "docId": "wo-cascade-span-2",
+      "docType": "workOrder",
+      "data": {
+        "workOrderNumber": "WO-CASCADE-SPAN-2",
+        "manufacturingOrderId": "mo-span-5",
+        "workCenterId": "wc-molding-2",
+        "startDate": "2026-02-10T18:00:00.000Z",
+        "endDate": "2026-02-10T21:00:00.000Z",
+        "durationMinutes": 180,
+        "isMaintenance": false,
+        "dependsOnWorkOrderIds": ["wo-cascade-span-1"],
+        "description": "CASCADE SPAN: Depends on wo-cascade-span-1, must wait for it to complete across shift boundary"
+      }
+    },
+    {
+      "docId": "wo-late-start-span",
+      "docType": "workOrder",
+      "data": {
+        "workOrderNumber": "WO-LATE-START",
+        "manufacturingOrderId": "mo-span-6",
+        "workCenterId": "wc-qc-1",
+        "startDate": "2026-02-10T16:30:00.000Z",
+        "endDate": "2026-02-10T18:30:00.000Z",
+        "durationMinutes": 120,
+        "isMaintenance": false,
+        "dependsOnWorkOrderIds": [],
+        "description": "SPAN TEST: 2-hour job at 4:30 PM (30 min in day 1, 90 min in day 2)"
+      }
+    },
+    {
+      "docId": "wo-early-morning-continuation",
+      "docType": "workOrder",
+      "data": {
+        "workOrderNumber": "WO-EARLY-MORNING",
+        "manufacturingOrderId": "mo-span-7",
+        "workCenterId": "wc-extrusion-2",
+        "startDate": "2026-02-10T16:00:00.000Z",
+        "endDate": "2026-02-11T09:00:00.000Z",
+        "durationMinutes": 120,
+        "isMaintenance": false,
+        "dependsOnWorkOrderIds": [],
+        "description": "SPAN TEST: 2-hour job (1h day 1: 4-5 PM, 1h day 2: 8-9 AM)"
+      }
+    },
+    {
+      "docId": "wo-three-day-span",
+      "docType": "workOrder",
+      "data": {
+        "workOrderNumber": "WO-THREE-DAY",
+        "manufacturingOrderId": "mo-span-8",
+        "workCenterId": "wc-assembly-2",
+        "startDate": "2026-02-10T16:00:00.000Z",
+        "endDate": "2026-02-12T10:00:00.000Z",
+        "durationMinutes": 900,
+        "isMaintenance": false,
+        "dependsOnWorkOrderIds": [],
+        "description": "SPAN TEST: 15-hour job spanning 3 days (1h day 1, 9h day 2, 5h day 3)"
+      }
+    },
+    {
+      "docId": "wo-maintenance-boundary",
+      "docType": "workOrder",
+      "data": {
+        "workOrderNumber": "WO-MAINTENANCE-BOUNDARY",
+        "manufacturingOrderId": "mo-span-9",
+        "workCenterId": "wc-cutting-2",
+        "startDate": "2026-02-11T12:00:00.000Z",
+        "endDate": "2026-02-11T16:00:00.000Z",
+        "durationMinutes": 240,
+        "isMaintenance": false,
+        "dependsOnWorkOrderIds": [],
+        "description": "COMPLEX: 4-hour job that encounters maintenance window from 2-3 PM - must pause for maintenance then resume"
+      }
+    },
+    {
+      "docId": "wo-maintenance-window",
+      "docType": "workOrder",
+      "data": {
+        "workOrderNumber": "WO-MAINTENANCE",
+        "manufacturingOrderId": "mo-span-9",
+        "workCenterId": "wc-cutting-2",
+        "startDate": "2026-02-11T14:00:00.000Z",
+        "endDate": "2026-02-11T15:00:00.000Z",
+        "durationMinutes": 60,
+        "isMaintenance": true,
+        "dependsOnWorkOrderIds": [],
+        "description": "IMMOVABLE: Maintenance window 2-3 PM"
+      }
+    }
+  ],
+  "workCenters": [
+    {
+      "docId": "wc-extrusion-1",
+      "docType": "workCenter",
+      "data": {
+        "name": "Extrusion Line 1",
+        "shifts": [
+          { "dayOfWeek": 1, "startHour": 8, "endHour": 17 },
+          { "dayOfWeek": 2, "startHour": 8, "endHour": 17 },
+          { "dayOfWeek": 3, "startHour": 8, "endHour": 17 },
+          { "dayOfWeek": 4, "startHour": 8, "endHour": 17 },
+          { "dayOfWeek": 5, "startHour": 8, "endHour": 17 }
+        ],
+        "maintenanceWindows": []
+      }
+    },
+    {
+      "docId": "wc-extrusion-2",
+      "docType": "workCenter",
+      "data": {
+        "name": "Extrusion Line 2",
+        "shifts": [
+          { "dayOfWeek": 1, "startHour": 8, "endHour": 17 },
+          { "dayOfWeek": 2, "startHour": 8, "endHour": 17 },
+          { "dayOfWeek": 3, "startHour": 8, "endHour": 17 },
+          { "dayOfWeek": 4, "startHour": 8, "endHour": 17 },
+          { "dayOfWeek": 5, "startHour": 8, "endHour": 17 }
+        ],
+        "maintenanceWindows": []
+      }
+    },
+    {
+      "docId": "wc-assembly-1",
+      "docType": "workCenter",
+      "data": {
+        "name": "Assembly Station 1",
+        "shifts": [
+          { "dayOfWeek": 1, "startHour": 8, "endHour": 17 },
+          { "dayOfWeek": 2, "startHour": 8, "endHour": 17 },
+          { "dayOfWeek": 3, "startHour": 8, "endHour": 17 },
+          { "dayOfWeek": 4, "startHour": 8, "endHour": 17 },
+          { "dayOfWeek": 5, "startHour": 8, "endHour": 17 }
+        ],
+        "maintenanceWindows": []
+      }
+    },
+    {
+      "docId": "wc-assembly-2",
+      "docType": "workCenter",
+      "data": {
+        "name": "Assembly Station 2",
+        "shifts": [
+          { "dayOfWeek": 1, "startHour": 8, "endHour": 17 },
+          { "dayOfWeek": 2, "startHour": 8, "endHour": 17 },
+          { "dayOfWeek": 3, "startHour": 8, "endHour": 17 },
+          { "dayOfWeek": 4, "startHour": 8, "endHour": 17 },
+          { "dayOfWeek": 5, "startHour": 8, "endHour": 17 }
+        ],
+        "maintenanceWindows": []
+      }
+    },
+    {
+      "docId": "wc-cutting-1",
+      "docType": "workCenter",
+      "data": {
+        "name": "Cutting Station 1",
+        "shifts": [
+          { "dayOfWeek": 1, "startHour": 8, "endHour": 17 },
+          { "dayOfWeek": 2, "startHour": 8, "endHour": 17 },
+          { "dayOfWeek": 3, "startHour": 8, "endHour": 17 },
+          { "dayOfWeek": 4, "startHour": 8, "endHour": 17 },
+          { "dayOfWeek": 5, "startHour": 8, "endHour": 17 }
+        ],
+        "maintenanceWindows": []
+      }
+    },
+    {
+      "docId": "wc-cutting-2",
+      "docType": "workCenter",
+      "data": {
+        "name": "Cutting Station 2",
+        "shifts": [
+          { "dayOfWeek": 1, "startHour": 8, "endHour": 17 },
+          { "dayOfWeek": 2, "startHour": 8, "endHour": 17 },
+          { "dayOfWeek": 3, "startHour": 8, "endHour": 17 },
+          { "dayOfWeek": 4, "startHour": 8, "endHour": 17 },
+          { "dayOfWeek": 5, "startHour": 8, "endHour": 17 }
+        ],
+        "maintenanceWindows": [
+          {
+            "startDate": "2026-02-11T14:00:00.000Z",
+            "endDate": "2026-02-11T15:00:00.000Z"
+          }
+        ]
+      }
+    },
+    {
+      "docId": "wc-packaging-1",
+      "docType": "workCenter",
+      "data": {
+        "name": "Packaging Line 1",
+        "shifts": [
+          { "dayOfWeek": 1, "startHour": 8, "endHour": 17 },
+          { "dayOfWeek": 2, "startHour": 8, "endHour": 17 },
+          { "dayOfWeek": 3, "startHour": 8, "endHour": 17 },
+          { "dayOfWeek": 4, "startHour": 8, "endHour": 17 },
+          { "dayOfWeek": 5, "startHour": 8, "endHour": 17 }
+        ],
+        "maintenanceWindows": []
+      }
+    },
+    {
+      "docId": "wc-molding-1",
+      "docType": "workCenter",
+      "data": {
+        "name": "Molding Press 1",
+        "shifts": [
+          { "dayOfWeek": 1, "startHour": 8, "endHour": 17 },
+          { "dayOfWeek": 2, "startHour": 8, "endHour": 17 },
+          { "dayOfWeek": 3, "startHour": 8, "endHour": 17 },
+          { "dayOfWeek": 4, "startHour": 8, "endHour": 17 },
+          { "dayOfWeek": 5, "startHour": 8, "endHour": 17 }
+        ],
+        "maintenanceWindows": []
+      }
+    },
+    {
+      "docId": "wc-molding-2",
+      "docType": "workCenter",
+      "data": {
+        "name": "Molding Press 2",
+        "shifts": [
+          { "dayOfWeek": 1, "startHour": 8, "endHour": 17 },
+          { "dayOfWeek": 2, "startHour": 8, "endHour": 17 },
+          { "dayOfWeek": 3, "startHour": 8, "endHour": 17 },
+          { "dayOfWeek": 4, "startHour": 8, "endHour": 17 },
+          { "dayOfWeek": 5, "startHour": 8, "endHour": 17 }
+        ],
+        "maintenanceWindows": []
+      }
+    },
+    {
+      "docId": "wc-qc-1",
+      "docType": "workCenter",
+      "data": {
+        "name": "Quality Control Station",
+        "shifts": [
+          { "dayOfWeek": 1, "startHour": 8, "endHour": 17 },
+          { "dayOfWeek": 2, "startHour": 8, "endHour": 17 },
+          { "dayOfWeek": 3, "startHour": 8, "endHour": 17 },
+          { "dayOfWeek": 4, "startHour": 8, "endHour": 17 },
+          { "dayOfWeek": 5, "startHour": 8, "endHour": 17 }
+        ],
+        "maintenanceWindows": []
+      }
+    }
+  ],
+  "manufacturingOrders": [
+    {
+      "docId": "mo-span-1",
+      "docType": "manufacturingOrder",
+      "data": {
+        "manufacturingOrderNumber": "MO-SPAN-1",
+        "itemId": "SINGLE-DAY-SPAN",
+        "quantity": 1,
+        "dueDate": "2026-02-15T17:00:00.000Z"
+      }
+    },
+    {
+      "docId": "mo-span-2",
+      "docType": "manufacturingOrder",
+      "data": {
+        "manufacturingOrderNumber": "MO-SPAN-2",
+        "itemId": "MULTI-DAY-SPAN",
+        "quantity": 1,
+        "dueDate": "2026-02-15T17:00:00.000Z"
+      }
+    },
+    {
+      "docId": "mo-span-3",
+      "docType": "manufacturingOrder",
+      "data": {
+        "manufacturingOrderNumber": "MO-SPAN-3",
+        "itemId": "WEEKEND-SPAN",
+        "quantity": 1,
+        "dueDate": "2026-02-20T17:00:00.000Z"
+      }
+    },
+    {
+      "docId": "mo-span-4",
+      "docType": "manufacturingOrder",
+      "data": {
+        "manufacturingOrderNumber": "MO-SPAN-4",
+        "itemId": "SHORT-TIME",
+        "quantity": 1,
+        "dueDate": "2026-02-15T17:00:00.000Z"
+      }
+    },
+    {
+      "docId": "mo-span-5",
+      "docType": "manufacturingOrder",
+      "data": {
+        "manufacturingOrderNumber": "MO-SPAN-5",
+        "itemId": "CASCADE-SPAN",
+        "quantity": 1,
+        "dueDate": "2026-02-15T17:00:00.000Z"
+      }
+    },
+    {
+      "docId": "mo-span-6",
+      "docType": "manufacturingOrder",
+      "data": {
+        "manufacturingOrderNumber": "MO-SPAN-6",
+        "itemId": "LATE-START",
+        "quantity": 1,
+        "dueDate": "2026-02-15T17:00:00.000Z"
+      }
+    },
+    {
+      "docId": "mo-span-7",
+      "docType": "manufacturingOrder",
+      "data": {
+        "manufacturingOrderNumber": "MO-SPAN-7",
+        "itemId": "EARLY-MORNING",
+        "quantity": 1,
+        "dueDate": "2026-02-15T17:00:00.000Z"
+      }
+    },
+    {
+      "docId": "mo-span-8",
+      "docType": "manufacturingOrder",
+      "data": {
+        "manufacturingOrderNumber": "MO-SPAN-8",
+        "itemId": "THREE-DAY",
+        "quantity": 1,
+        "dueDate": "2026-02-15T17:00:00.000Z"
+      }
+    },
+    {
+      "docId": "mo-span-9",
+      "docType": "manufacturingOrder",
+      "data": {
+        "manufacturingOrderNumber": "MO-SPAN-9",
+        "itemId": "MAINTENANCE-BOUNDARY",
+        "quantity": 1,
+        "dueDate": "2026-02-15T17:00:00.000Z"
+      }
+    }
+  ]
+}

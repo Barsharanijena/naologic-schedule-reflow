@@ -149,6 +149,12 @@ export class ConstraintValidator {
         });
       }
 
+      // Skip shift validation for maintenance work orders
+      // (they are pre-scheduled and cannot be moved)
+      if (wo.data.isMaintenance) {
+        return;
+      }
+
       // Basic check: start date should be within shift hours
       // (Full shift-aware calculation happens in date-utils)
       if (!isWithinShiftHours(wo.data.startDate, workCenter.data.shifts)) {
@@ -176,6 +182,10 @@ export class ConstraintValidator {
     workOrders.forEach(wo => {
       const workCenter = workCenterMap.get(wo.data.workCenterId);
       if (!workCenter) return;
+
+      // Skip maintenance window check for maintenance work orders themselves
+      // (they represent the maintenance activity)
+      if (wo.data.isMaintenance) return;
 
       if (overlapsWithMaintenance(
         wo.data.startDate,

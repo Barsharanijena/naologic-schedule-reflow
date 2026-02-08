@@ -1,0 +1,255 @@
+{
+  "workOrders": [
+    {
+      "docId": "wo-001",
+      "docType": "workOrder",
+      "data": {
+        "workOrderNumber": "WO-001-PART-A",
+        "manufacturingOrderId": "mo-001",
+        "workCenterId": "wc-extrusion-1",
+        "startDate": "2026-02-10T08:00:00.000Z",
+        "endDate": "2026-02-10T10:00:00.000Z",
+        "durationMinutes": 120,
+        "isMaintenance": false,
+        "dependsOnWorkOrderIds": [],
+        "description": "Extrude Part A - feeds into assembly"
+      }
+    },
+    {
+      "docId": "wo-002",
+      "docType": "workOrder",
+      "data": {
+        "workOrderNumber": "WO-002-PART-B",
+        "manufacturingOrderId": "mo-001",
+        "workCenterId": "wc-extrusion-2",
+        "startDate": "2026-02-10T08:00:00.000Z",
+        "endDate": "2026-02-10T10:00:00.000Z",
+        "durationMinutes": 120,
+        "isMaintenance": false,
+        "dependsOnWorkOrderIds": [],
+        "description": "Extrude Part B - feeds into assembly (runs in parallel with Part A)"
+      }
+    },
+    {
+      "docId": "wo-003",
+      "docType": "workOrder",
+      "data": {
+        "workOrderNumber": "WO-003-ASSEMBLY",
+        "manufacturingOrderId": "mo-001",
+        "workCenterId": "wc-assembly-1",
+        "startDate": "2026-02-10T10:00:00.000Z",
+        "endDate": "2026-02-10T13:00:00.000Z",
+        "durationMinutes": 180,
+        "isMaintenance": false,
+        "dependsOnWorkOrderIds": ["wo-001", "wo-002"],
+        "description": "Assembly - DIAMOND DEPENDENCY: waits for BOTH Part A and Part B"
+      }
+    },
+    {
+      "docId": "wo-004",
+      "docType": "workOrder",
+      "data": {
+        "workOrderNumber": "WO-004-QC",
+        "manufacturingOrderId": "mo-001",
+        "workCenterId": "wc-qc-1",
+        "startDate": "2026-02-10T13:00:00.000Z",
+        "endDate": "2026-02-10T14:00:00.000Z",
+        "durationMinutes": 60,
+        "isMaintenance": false,
+        "dependsOnWorkOrderIds": ["wo-003"],
+        "description": "Quality Control - depends on assembly completion"
+      }
+    },
+    {
+      "docId": "wo-001-delayed",
+      "docType": "workOrder",
+      "data": {
+        "workOrderNumber": "WO-001-PART-A-DELAYED",
+        "manufacturingOrderId": "mo-001",
+        "workCenterId": "wc-extrusion-1",
+        "startDate": "2026-02-10T08:00:00.000Z",
+        "endDate": "2026-02-10T12:00:00.000Z",
+        "durationMinutes": 120,
+        "isMaintenance": false,
+        "dependsOnWorkOrderIds": [],
+        "description": "DISRUPTION: Part A extrusion delayed by 2 hours (machine breakdown)"
+      }
+    },
+    {
+      "docId": "wo-005",
+      "docType": "workOrder",
+      "data": {
+        "workOrderNumber": "WO-005-PART-C",
+        "manufacturingOrderId": "mo-002",
+        "workCenterId": "wc-molding-1",
+        "startDate": "2026-02-10T08:00:00.000Z",
+        "endDate": "2026-02-10T11:00:00.000Z",
+        "durationMinutes": 180,
+        "isMaintenance": false,
+        "dependsOnWorkOrderIds": [],
+        "description": "Mold Part C - independent work order for different manufacturing order"
+      }
+    },
+    {
+      "docId": "wo-006",
+      "docType": "workOrder",
+      "data": {
+        "workOrderNumber": "WO-006-PART-D",
+        "manufacturingOrderId": "mo-002",
+        "workCenterId": "wc-molding-2",
+        "startDate": "2026-02-10T08:00:00.000Z",
+        "endDate": "2026-02-10T11:00:00.000Z",
+        "durationMinutes": 180,
+        "isMaintenance": false,
+        "dependsOnWorkOrderIds": [],
+        "description": "Mold Part D - independent work order for different manufacturing order"
+      }
+    },
+    {
+      "docId": "wo-007",
+      "docType": "workOrder",
+      "data": {
+        "workOrderNumber": "WO-007-FINAL-ASSEMBLY",
+        "manufacturingOrderId": "mo-002",
+        "workCenterId": "wc-assembly-2",
+        "startDate": "2026-02-10T11:00:00.000Z",
+        "endDate": "2026-02-10T14:00:00.000Z",
+        "durationMinutes": 180,
+        "isMaintenance": false,
+        "dependsOnWorkOrderIds": ["wo-005", "wo-006"],
+        "description": "SECOND DIAMOND: Final assembly waits for both Part C and Part D"
+      }
+    }
+  ],
+  "workCenters": [
+    {
+      "docId": "wc-extrusion-1",
+      "docType": "workCenter",
+      "data": {
+        "name": "Extrusion Line 1",
+        "shifts": [
+          { "dayOfWeek": 1, "startHour": 8, "endHour": 17 },
+          { "dayOfWeek": 2, "startHour": 8, "endHour": 17 },
+          { "dayOfWeek": 3, "startHour": 8, "endHour": 17 },
+          { "dayOfWeek": 4, "startHour": 8, "endHour": 17 },
+          { "dayOfWeek": 5, "startHour": 8, "endHour": 17 }
+        ],
+        "maintenanceWindows": []
+      }
+    },
+    {
+      "docId": "wc-extrusion-2",
+      "docType": "workCenter",
+      "data": {
+        "name": "Extrusion Line 2",
+        "shifts": [
+          { "dayOfWeek": 1, "startHour": 8, "endHour": 17 },
+          { "dayOfWeek": 2, "startHour": 8, "endHour": 17 },
+          { "dayOfWeek": 3, "startHour": 8, "endHour": 17 },
+          { "dayOfWeek": 4, "startHour": 8, "endHour": 17 },
+          { "dayOfWeek": 5, "startHour": 8, "endHour": 17 }
+        ],
+        "maintenanceWindows": []
+      }
+    },
+    {
+      "docId": "wc-assembly-1",
+      "docType": "workCenter",
+      "data": {
+        "name": "Assembly Station 1",
+        "shifts": [
+          { "dayOfWeek": 1, "startHour": 8, "endHour": 17 },
+          { "dayOfWeek": 2, "startHour": 8, "endHour": 17 },
+          { "dayOfWeek": 3, "startHour": 8, "endHour": 17 },
+          { "dayOfWeek": 4, "startHour": 8, "endHour": 17 },
+          { "dayOfWeek": 5, "startHour": 8, "endHour": 17 }
+        ],
+        "maintenanceWindows": []
+      }
+    },
+    {
+      "docId": "wc-assembly-2",
+      "docType": "workCenter",
+      "data": {
+        "name": "Assembly Station 2",
+        "shifts": [
+          { "dayOfWeek": 1, "startHour": 8, "endHour": 17 },
+          { "dayOfWeek": 2, "startHour": 8, "endHour": 17 },
+          { "dayOfWeek": 3, "startHour": 8, "endHour": 17 },
+          { "dayOfWeek": 4, "startHour": 8, "endHour": 17 },
+          { "dayOfWeek": 5, "startHour": 8, "endHour": 17 }
+        ],
+        "maintenanceWindows": []
+      }
+    },
+    {
+      "docId": "wc-qc-1",
+      "docType": "workCenter",
+      "data": {
+        "name": "Quality Control Station",
+        "shifts": [
+          { "dayOfWeek": 1, "startHour": 8, "endHour": 17 },
+          { "dayOfWeek": 2, "startHour": 8, "endHour": 17 },
+          { "dayOfWeek": 3, "startHour": 8, "endHour": 17 },
+          { "dayOfWeek": 4, "startHour": 8, "endHour": 17 },
+          { "dayOfWeek": 5, "startHour": 8, "endHour": 17 }
+        ],
+        "maintenanceWindows": []
+      }
+    },
+    {
+      "docId": "wc-molding-1",
+      "docType": "workCenter",
+      "data": {
+        "name": "Molding Press 1",
+        "shifts": [
+          { "dayOfWeek": 1, "startHour": 8, "endHour": 17 },
+          { "dayOfWeek": 2, "startHour": 8, "endHour": 17 },
+          { "dayOfWeek": 3, "startHour": 8, "endHour": 17 },
+          { "dayOfWeek": 4, "startHour": 8, "endHour": 17 },
+          { "dayOfWeek": 5, "startHour": 8, "endHour": 17 }
+        ],
+        "maintenanceWindows": []
+      }
+    },
+    {
+      "docId": "wc-molding-2",
+      "docType": "workCenter",
+      "data": {
+        "name": "Molding Press 2",
+        "shifts": [
+          { "dayOfWeek": 1, "startHour": 8, "endHour": 17 },
+          { "dayOfWeek": 2, "startHour": 8, "endHour": 17 },
+          { "dayOfWeek": 3, "startHour": 8, "endHour": 17 },
+          { "dayOfWeek": 4, "startHour": 8, "endHour": 17 },
+          { "dayOfWeek": 5, "startHour": 8, "endHour": 17 }
+        ],
+        "maintenanceWindows": []
+      }
+    }
+  ],
+  "manufacturingOrders": [
+    {
+      "docId": "mo-001",
+      "docType": "manufacturingOrder",
+      "data": {
+        "manufacturingOrderNumber": "MO-001",
+        "itemId": "WIDGET-ASSEMBLY",
+        "quantity": 100,
+        "dueDate": "2026-02-12T17:00:00.000Z",
+        "description": "Widget assembly requiring Part A + Part B"
+      }
+    },
+    {
+      "docId": "mo-002",
+      "docType": "manufacturingOrder",
+      "data": {
+        "manufacturingOrderNumber": "MO-002",
+        "itemId": "COMPONENT-KIT",
+        "quantity": 50,
+        "dueDate": "2026-02-13T17:00:00.000Z",
+        "description": "Component kit requiring Part C + Part D"
+      }
+    }
+  ]
+}
