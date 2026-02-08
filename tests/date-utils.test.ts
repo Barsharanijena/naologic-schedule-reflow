@@ -38,11 +38,11 @@ describe('Date Utils', () => {
     });
 
     it('should skip weekends with no shifts', () => {
-      const start = '2026-02-14T16:00:00.000Z'; // Friday 4 PM
+      const start = '2026-02-13T16:00:00.000Z'; // Friday 4 PM
       const duration = 120; // 2 hours
       const end = calculateEndDateWithShifts(start, duration, standardShifts);
       // Should work 60 min Friday (4-5PM), skip weekend, resume Monday 8AM
-      expect(end).toBe('2026-02-17T09:00:00.000Z');
+      expect(end).toBe('2026-02-16T09:00:00.000Z');
     });
 
     it('should handle multi-day work spanning multiple shifts', () => {

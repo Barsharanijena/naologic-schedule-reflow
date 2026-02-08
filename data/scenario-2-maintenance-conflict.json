@@ -41,20 +41,6 @@
         "isMaintenance": false,
         "dependsOnWorkOrderIds": []
       }
-    },
-    {
-      "docId": "wo-maint-001",
-      "docType": "workOrder",
-      "data": {
-        "workOrderNumber": "MAINT-001",
-        "manufacturingOrderId": "mo-maint",
-        "workCenterId": "wc-extrusion-2",
-        "startDate": "2026-02-10T13:00:00.000Z",
-        "endDate": "2026-02-10T15:00:00.000Z",
-        "durationMinutes": 120,
-        "isMaintenance": true,
-        "dependsOnWorkOrderIds": []
-      }
     }
   ],
   "workCenters": [

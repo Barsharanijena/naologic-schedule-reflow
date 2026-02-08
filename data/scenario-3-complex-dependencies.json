@@ -1,0 +1,183 @@
+{
+  "workOrders": [
+    {
+      "docId": "wo-201",
+      "docType": "workOrder",
+      "data": {
+        "workOrderNumber": "WO-201",
+        "manufacturingOrderId": "mo-201",
+        "workCenterId": "wc-mixing-1",
+        "startDate": "2026-02-10T08:00:00.000Z",
+        "endDate": "2026-02-10T12:00:00.000Z",
+        "durationMinutes": 240,
+        "isMaintenance": false,
+        "dependsOnWorkOrderIds": []
+      }
+    },
+    {
+      "docId": "wo-202",
+      "docType": "workOrder",
+      "data": {
+        "workOrderNumber": "WO-202",
+        "manufacturingOrderId": "mo-201",
+        "workCenterId": "wc-mixing-1",
+        "startDate": "2026-02-10T12:00:00.000Z",
+        "endDate": "2026-02-10T16:00:00.000Z",
+        "durationMinutes": 240,
+        "isMaintenance": false,
+        "dependsOnWorkOrderIds": []
+      }
+    },
+    {
+      "docId": "wo-203",
+      "docType": "workOrder",
+      "data": {
+        "workOrderNumber": "WO-203",
+        "manufacturingOrderId": "mo-202",
+        "workCenterId": "wc-extrusion-3",
+        "startDate": "2026-02-10T12:00:00.000Z",
+        "endDate": "2026-02-10T15:00:00.000Z",
+        "durationMinutes": 180,
+        "isMaintenance": false,
+        "dependsOnWorkOrderIds": ["wo-201"]
+      }
+    },
+    {
+      "docId": "wo-204",
+      "docType": "workOrder",
+      "data": {
+        "workOrderNumber": "WO-204",
+        "manufacturingOrderId": "mo-202",
+        "workCenterId": "wc-extrusion-3",
+        "startDate": "2026-02-10T16:00:00.000Z",
+        "endDate": "2026-02-11T10:00:00.000Z",
+        "durationMinutes": 180,
+        "isMaintenance": false,
+        "dependsOnWorkOrderIds": ["wo-202"]
+      }
+    },
+    {
+      "docId": "wo-205",
+      "docType": "workOrder",
+      "data": {
+        "workOrderNumber": "WO-205",
+        "manufacturingOrderId": "mo-203",
+        "workCenterId": "wc-quality-1",
+        "startDate": "2026-02-10T15:00:00.000Z",
+        "endDate": "2026-02-10T16:00:00.000Z",
+        "durationMinutes": 60,
+        "isMaintenance": false,
+        "dependsOnWorkOrderIds": ["wo-203", "wo-204"]
+      }
+    },
+    {
+      "docId": "wo-206",
+      "docType": "workOrder",
+      "data": {
+        "workOrderNumber": "WO-206-DELAYED",
+        "manufacturingOrderId": "mo-204",
+        "workCenterId": "wc-extrusion-3",
+        "startDate": "2026-02-10T08:00:00.000Z",
+        "endDate": "2026-02-10T16:00:00.000Z",
+        "durationMinutes": 480,
+        "isMaintenance": false,
+        "dependsOnWorkOrderIds": []
+      }
+    }
+  ],
+  "workCenters": [
+    {
+      "docId": "wc-mixing-1",
+      "docType": "workCenter",
+      "data": {
+        "name": "Mixing Station 1",
+        "shifts": [
+          { "dayOfWeek": 1, "startHour": 8, "endHour": 17 },
+          { "dayOfWeek": 2, "startHour": 8, "endHour": 17 },
+          { "dayOfWeek": 3, "startHour": 8, "endHour": 17 },
+          { "dayOfWeek": 4, "startHour": 8, "endHour": 17 },
+          { "dayOfWeek": 5, "startHour": 8, "endHour": 17 }
+        ],
+        "maintenanceWindows": []
+      }
+    },
+    {
+      "docId": "wc-extrusion-3",
+      "docType": "workCenter",
+      "data": {
+        "name": "Extrusion Line 3",
+        "shifts": [
+          { "dayOfWeek": 1, "startHour": 8, "endHour": 17 },
+          { "dayOfWeek": 2, "startHour": 8, "endHour": 17 },
+          { "dayOfWeek": 3, "startHour": 8, "endHour": 17 },
+          { "dayOfWeek": 4, "startHour": 8, "endHour": 17 },
+          { "dayOfWeek": 5, "startHour": 8, "endHour": 17 }
+        ],
+        "maintenanceWindows": [
+          {
+            "startDate": "2026-02-10T14:00:00.000Z",
+            "endDate": "2026-02-10T15:00:00.000Z",
+            "reason": "Quick calibration"
+          }
+        ]
+      }
+    },
+    {
+      "docId": "wc-quality-1",
+      "docType": "workCenter",
+      "data": {
+        "name": "Quality Control Station",
+        "shifts": [
+          { "dayOfWeek": 1, "startHour": 8, "endHour": 17 },
+          { "dayOfWeek": 2, "startHour": 8, "endHour": 17 },
+          { "dayOfWeek": 3, "startHour": 8, "endHour": 17 },
+          { "dayOfWeek": 4, "startHour": 8, "endHour": 17 },
+          { "dayOfWeek": 5, "startHour": 8, "endHour": 17 }
+        ],
+        "maintenanceWindows": []
+      }
+    }
+  ],
+  "manufacturingOrders": [
+    {
+      "docId": "mo-201",
+      "docType": "manufacturingOrder",
+      "data": {
+        "manufacturingOrderNumber": "MO-201",
+        "itemId": "COMPOUND-A",
+        "quantity": 500,
+        "dueDate": "2026-02-15T17:00:00.000Z"
+      }
+    },
+    {
+      "docId": "mo-202",
+      "docType": "manufacturingOrder",
+      "data": {
+        "manufacturingOrderNumber": "MO-202",
+        "itemId": "PIPE-400MM",
+        "quantity": 300,
+        "dueDate": "2026-02-16T17:00:00.000Z"
+      }
+    },
+    {
+      "docId": "mo-203",
+      "docType": "manufacturingOrder",
+      "data": {
+        "manufacturingOrderNumber": "MO-203",
+        "itemId": "QC-CERT",
+        "quantity": 1,
+        "dueDate": "2026-02-17T17:00:00.000Z"
+      }
+    },
+    {
+      "docId": "mo-204",
+      "docType": "manufacturingOrder",
+      "data": {
+        "manufacturingOrderNumber": "MO-204",
+        "itemId": "PIPE-500MM",
+        "quantity": 200,
+        "dueDate": "2026-02-14T17:00:00.000Z"
+      }
+    }
+  ]
+}
