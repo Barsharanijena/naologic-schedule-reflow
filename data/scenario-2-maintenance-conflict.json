@@ -1,0 +1,115 @@
+{
+  "workOrders": [
+    {
+      "docId": "wo-101",
+      "docType": "workOrder",
+      "data": {
+        "workOrderNumber": "WO-101",
+        "manufacturingOrderId": "mo-101",
+        "workCenterId": "wc-extrusion-2",
+        "startDate": "2026-02-10T08:00:00.000Z",
+        "endDate": "2026-02-10T11:00:00.000Z",
+        "durationMinutes": 180,
+        "isMaintenance": false,
+        "dependsOnWorkOrderIds": []
+      }
+    },
+    {
+      "docId": "wo-102",
+      "docType": "workOrder",
+      "data": {
+        "workOrderNumber": "WO-102",
+        "manufacturingOrderId": "mo-102",
+        "workCenterId": "wc-extrusion-2",
+        "startDate": "2026-02-10T11:00:00.000Z",
+        "endDate": "2026-02-10T14:00:00.000Z",
+        "durationMinutes": 180,
+        "isMaintenance": false,
+        "dependsOnWorkOrderIds": []
+      }
+    },
+    {
+      "docId": "wo-103",
+      "docType": "workOrder",
+      "data": {
+        "workOrderNumber": "WO-103",
+        "manufacturingOrderId": "mo-103",
+        "workCenterId": "wc-extrusion-2",
+        "startDate": "2026-02-10T14:00:00.000Z",
+        "endDate": "2026-02-10T16:00:00.000Z",
+        "durationMinutes": 120,
+        "isMaintenance": false,
+        "dependsOnWorkOrderIds": []
+      }
+    },
+    {
+      "docId": "wo-maint-001",
+      "docType": "workOrder",
+      "data": {
+        "workOrderNumber": "MAINT-001",
+        "manufacturingOrderId": "mo-maint",
+        "workCenterId": "wc-extrusion-2",
+        "startDate": "2026-02-10T13:00:00.000Z",
+        "endDate": "2026-02-10T15:00:00.000Z",
+        "durationMinutes": 120,
+        "isMaintenance": true,
+        "dependsOnWorkOrderIds": []
+      }
+    }
+  ],
+  "workCenters": [
+    {
+      "docId": "wc-extrusion-2",
+      "docType": "workCenter",
+      "data": {
+        "name": "Extrusion Line 2",
+        "shifts": [
+          { "dayOfWeek": 1, "startHour": 8, "endHour": 17 },
+          { "dayOfWeek": 2, "startHour": 8, "endHour": 17 },
+          { "dayOfWeek": 3, "startHour": 8, "endHour": 17 },
+          { "dayOfWeek": 4, "startHour": 8, "endHour": 17 },
+          { "dayOfWeek": 5, "startHour": 8, "endHour": 17 }
+        ],
+        "maintenanceWindows": [
+          {
+            "startDate": "2026-02-10T13:00:00.000Z",
+            "endDate": "2026-02-10T15:00:00.000Z",
+            "reason": "Scheduled preventive maintenance"
+          }
+        ]
+      }
+    }
+  ],
+  "manufacturingOrders": [
+    {
+      "docId": "mo-101",
+      "docType": "manufacturingOrder",
+      "data": {
+        "manufacturingOrderNumber": "MO-101",
+        "itemId": "PIPE-200MM",
+        "quantity": 800,
+        "dueDate": "2026-02-12T17:00:00.000Z"
+      }
+    },
+    {
+      "docId": "mo-102",
+      "docType": "manufacturingOrder",
+      "data": {
+        "manufacturingOrderNumber": "MO-102",
+        "itemId": "PIPE-250MM",
+        "quantity": 600,
+        "dueDate": "2026-02-12T17:00:00.000Z"
+      }
+    },
+    {
+      "docId": "mo-103",
+      "docType": "manufacturingOrder",
+      "data": {
+        "manufacturingOrderNumber": "MO-103",
+        "itemId": "PIPE-300MM",
+        "quantity": 400,
+        "dueDate": "2026-02-13T17:00:00.000Z"
+      }
+    }
+  ]
+}

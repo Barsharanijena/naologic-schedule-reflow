@@ -1,0 +1,129 @@
+{
+  "workOrders": [
+    {
+      "docId": "wo-001",
+      "docType": "workOrder",
+      "data": {
+        "workOrderNumber": "WO-001",
+        "manufacturingOrderId": "mo-001",
+        "workCenterId": "wc-extrusion-1",
+        "startDate": "2026-02-10T08:00:00.000Z",
+        "endDate": "2026-02-10T12:00:00.000Z",
+        "durationMinutes": 240,
+        "isMaintenance": false,
+        "dependsOnWorkOrderIds": []
+      }
+    },
+    {
+      "docId": "wo-002",
+      "docType": "workOrder",
+      "data": {
+        "workOrderNumber": "WO-002",
+        "manufacturingOrderId": "mo-001",
+        "workCenterId": "wc-cutting-1",
+        "startDate": "2026-02-10T12:00:00.000Z",
+        "endDate": "2026-02-10T14:00:00.000Z",
+        "durationMinutes": 120,
+        "isMaintenance": false,
+        "dependsOnWorkOrderIds": ["wo-001"]
+      }
+    },
+    {
+      "docId": "wo-003",
+      "docType": "workOrder",
+      "data": {
+        "workOrderNumber": "WO-003",
+        "manufacturingOrderId": "mo-001",
+        "workCenterId": "wc-packaging-1",
+        "startDate": "2026-02-10T14:00:00.000Z",
+        "endDate": "2026-02-10T16:00:00.000Z",
+        "durationMinutes": 120,
+        "isMaintenance": false,
+        "dependsOnWorkOrderIds": ["wo-002"]
+      }
+    },
+    {
+      "docId": "wo-004",
+      "docType": "workOrder",
+      "data": {
+        "workOrderNumber": "WO-004-DELAYED",
+        "manufacturingOrderId": "mo-002",
+        "workCenterId": "wc-extrusion-1",
+        "startDate": "2026-02-10T08:00:00.000Z",
+        "endDate": "2026-02-10T15:00:00.000Z",
+        "durationMinutes": 420,
+        "isMaintenance": false,
+        "dependsOnWorkOrderIds": []
+      }
+    }
+  ],
+  "workCenters": [
+    {
+      "docId": "wc-extrusion-1",
+      "docType": "workCenter",
+      "data": {
+        "name": "Extrusion Line 1",
+        "shifts": [
+          { "dayOfWeek": 1, "startHour": 8, "endHour": 17 },
+          { "dayOfWeek": 2, "startHour": 8, "endHour": 17 },
+          { "dayOfWeek": 3, "startHour": 8, "endHour": 17 },
+          { "dayOfWeek": 4, "startHour": 8, "endHour": 17 },
+          { "dayOfWeek": 5, "startHour": 8, "endHour": 17 }
+        ],
+        "maintenanceWindows": []
+      }
+    },
+    {
+      "docId": "wc-cutting-1",
+      "docType": "workCenter",
+      "data": {
+        "name": "Cutting Station 1",
+        "shifts": [
+          { "dayOfWeek": 1, "startHour": 8, "endHour": 17 },
+          { "dayOfWeek": 2, "startHour": 8, "endHour": 17 },
+          { "dayOfWeek": 3, "startHour": 8, "endHour": 17 },
+          { "dayOfWeek": 4, "startHour": 8, "endHour": 17 },
+          { "dayOfWeek": 5, "startHour": 8, "endHour": 17 }
+        ],
+        "maintenanceWindows": []
+      }
+    },
+    {
+      "docId": "wc-packaging-1",
+      "docType": "workCenter",
+      "data": {
+        "name": "Packaging Line 1",
+        "shifts": [
+          { "dayOfWeek": 1, "startHour": 8, "endHour": 17 },
+          { "dayOfWeek": 2, "startHour": 8, "endHour": 17 },
+          { "dayOfWeek": 3, "startHour": 8, "endHour": 17 },
+          { "dayOfWeek": 4, "startHour": 8, "endHour": 17 },
+          { "dayOfWeek": 5, "startHour": 8, "endHour": 17 }
+        ],
+        "maintenanceWindows": []
+      }
+    }
+  ],
+  "manufacturingOrders": [
+    {
+      "docId": "mo-001",
+      "docType": "manufacturingOrder",
+      "data": {
+        "manufacturingOrderNumber": "MO-001",
+        "itemId": "PIPE-100MM",
+        "quantity": 1000,
+        "dueDate": "2026-02-15T17:00:00.000Z"
+      }
+    },
+    {
+      "docId": "mo-002",
+      "docType": "manufacturingOrder",
+      "data": {
+        "manufacturingOrderNumber": "MO-002",
+        "itemId": "PIPE-150MM",
+        "quantity": 500,
+        "dueDate": "2026-02-15T17:00:00.000Z"
+      }
+    }
+  ]
+}
