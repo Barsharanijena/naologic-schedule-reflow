@@ -6,7 +6,7 @@ A production scheduling algorithm that intelligently reschedules work orders whe
 
 ---
 
-## 🚀 Quick Start
+## Quick Start
 
 ### Installation
 
@@ -20,9 +20,7 @@ npm install
 npm run dev
 ```
 
-This will run two demonstration scenarios:
-1. **Delay Cascade**: Shows how a delayed work order affects downstream dependencies
-2. **Maintenance Conflict**: Demonstrates rescheduling around maintenance windows
+This will run demonstration scenarios showing delay cascades and maintenance conflicts.
 
 ### Run Tests
 
@@ -44,21 +42,74 @@ npm run build
 
 ---
 
-## 📋 Problem Overview
+## Problem Overview
 
-Manufacturing facilities face constant disruptions:
-- Work orders run longer than expected
-- Machines go down for maintenance
-- Work orders have dependencies (Order B can't start until Order A finishes)
-- Different work centers have different shift schedules
+Manufacturing facilities face constant disruptions: work orders run longer than expected, machines go down for maintenance, materials arrive late. When a disruption happens, you can't just delay one work order in isolation - you need to reflow the entire schedule while respecting all constraints.
 
-This system implements a **reflow algorithm** that reschedules work orders to produce a valid schedule while respecting all constraints.
+This system implements a **reflow algorithm** that produces valid schedules when disruptions occur.
 
 ---
 
-## 🏗️ Architecture
+## Design Philosophy
 
-### High-Level Design
+**Constraint Satisfaction is the Core Requirement**
+
+My primary goal was to build a scheduler that produces VALID schedules where all hard constraints are met. A correct scheduler that respects constraints is worth far more than an "optimized" one that violates them.
+
+**Correct Before Intelligent**
+
+I chose a greedy forward-scheduling approach because it's simple, correct, and fast. This aligns with the principle of not optimizing prematurely. Get correctness right first, then optimize if needed.
+
+**Key Principles:**
+- Maintenance is SACRED - work orders marked `isMaintenance: true` are immovable; all regular work flows around them
+- Dependencies must be satisfied - dependent work cannot start until all prerequisites complete
+- Work centers are single-threaded - only one job at a time
+- Work pauses outside shift hours - no overnight work, resumes next shift
+- Validation proves correctness - the schedule must pass all constraint checks
+
+---
+
+## ERP Context & Domain Model
+
+Manufacturing facilities operate on a three-tier hierarchy:
+
+### 1. Manufacturing Order (the "what")
+A customer order or production request.
+- Example: "We need 500 units of PVC pipe by March 15th"
+- Has a due date, item ID, and quantity
+- Represents the overall production goal
+
+### 2. Work Orders (the "how")
+Discrete production steps to fulfill the Manufacturing Order.
+- Example: For PVC pipe production:
+  - Extrusion (4 hours on Line A)
+  - Cooling (2 hours on Cooling Station)
+  - Cutting (1 hour on Cutting Line B)
+  - Quality Check (30 min on QC Station)
+- Have dependencies - you can't cut before extruding
+- Each has a duration, start/end time, and runs on a specific Work Center
+
+### 3. Work Centers (the "where")
+Physical machines or stations with real-world constraints.
+- Single-threaded: Only one job at a time
+- Operating hours: Defined shifts (example: Mon-Fri 8 AM-5 PM)
+- Maintenance windows: Scheduled downtime that cannot be moved
+- Examples: Extrusion Line 1, Cutting Station, Assembly Line
+
+### When Disruption Occurs
+
+Say Extrusion Line A breaks down for 2 hours. The reflow algorithm must:
+1. Push the affected work order back by 2 hours
+2. Cascade that delay through all dependencies
+3. Avoid conflicts with other orders on those work centers
+4. Respect shift boundaries (work pauses at 5 PM, resumes 8 AM)
+5. Flow around any maintenance windows (sacred, immovable)
+
+---
+
+## Architecture
+
+### High-Level Flow
 
 ```
 Input (Current Schedule + Constraints)
@@ -72,49 +123,41 @@ For Each Work Order:
   - Respect Shift Hours
   - Avoid Maintenance Windows
     ↓
+Validation (Prove Correctness)
+    ↓
 Output (Valid Schedule + Changes + Metrics)
 ```
 
 ### Core Components
 
-1. **ReflowService** (`src/core/reflow-service.ts`)
-   - Main scheduling algorithm
-   - Iterates through work orders in dependency order
-   - Calculates earliest valid start times
-   - Handles shift-aware scheduling
+#### 1. ReflowService (`src/core/reflow-service.ts`)
+Main scheduling algorithm that iterates through work orders in dependency order and calculates earliest valid start times using shift-aware scheduling.
 
-2. **DependencyResolver** (`src/core/dependency-resolver.ts`)
-   - Builds dependency graph
-   - Detects circular dependencies (DFS-based cycle detection)
-   - Topological sorting (Kahn's algorithm)
-   - DAG operations
+#### 2. DependencyResolver (`src/core/dependency-resolver.ts`)
+Builds dependency graph, detects circular dependencies using DFS-based cycle detection, and performs topological sorting using Kahn's algorithm for DAG operations.
 
-3. **ConstraintValidator** (`src/core/constraint-validator.ts`)
-   - Validates all constraints
-   - Checks for dependency violations
-   - Detects work center conflicts
-   - Verifies shift compliance
-   - Checks maintenance window conflicts
+**Why Topological Sort?**
+Work order dependencies form a Directed Acyclic Graph (DAG). Topological sort gives us a valid linear ordering where every work order comes AFTER all its prerequisites. This guarantees we can schedule without violating dependencies and lets us detect impossible schedules (circular dependencies) early.
 
-4. **Date Utilities** (`src/utils/date-utils.ts`)
-   - Shift-aware date calculations using Luxon
-   - Work pauses outside shift hours
-   - Overlap detection
-   - Maintenance window checks
+#### 3. ConstraintValidator (`src/core/constraint-validator.ts`)
+Validates all constraints to prove correctness. Checks for dependency violations, work center conflicts, shift compliance, and maintenance window conflicts.
+
+#### 4. Date Utilities (`src/utils/date-utils.ts`)
+Shift-aware date calculations using Luxon. Handles work pausing outside shift hours, overlap detection, and maintenance window checks.
 
 ---
 
-## 🎯 Algorithm Approach
+## Algorithm Approach
 
-### Key Algorithm: Shift-Aware Scheduling
+### Shift-Aware Scheduling
 
-The most challenging aspect is calculating work duration across shift boundaries:
+The most challenging aspect is calculating work duration across shift boundaries.
 
 **Example**: A 120-minute work order starts Monday 4 PM, shift ends at 5 PM (Mon-Fri 8 AM-5 PM)
 - Works 60 minutes Monday (4-5 PM)
 - **Pauses** overnight
 - Resumes Tuesday 8 AM
-- Completes at 9 AM
+- Completes at 9 AM Tuesday
 
 **Implementation** (`calculateEndDateWithShifts`):
 ```typescript
@@ -137,8 +180,8 @@ The most challenging aspect is calculating work duration across shift boundaries
    - Check dependency completion times
    - Find next available slot on work center
    - Adjust to shift boundaries
-   - Avoid maintenance windows
-3. **Validate & Return**: Ensure final schedule satisfies all constraints
+   - Avoid maintenance windows (sacred)
+3. **Validate**: Ensure final schedule satisfies all constraints
 
 ### Constraint Handling
 
@@ -147,54 +190,164 @@ The most challenging aspect is calculating work duration across shift boundaries
 | **Dependencies** | Process in topological order; start ≥ max(parent end dates) |
 | **Work Center Conflicts** | Find next available time slot after existing bookings |
 | **Shift Boundaries** | Use shift-aware date calculation; work pauses outside shifts |
-| **Maintenance Windows** | Treat as blocked time; find next available slot after maintenance |
+| **Maintenance Windows** | Treat as immovable blocked time; find next available slot after |
 
 ---
 
-## 📊 Sample Scenarios
+## Validation & Proof of Correctness
 
-### Scenario 1: Delay Cascade
+After scheduling, the system validates EVERY constraint to prove the schedule is valid:
 
-**Setup**:
-- WO-001 → WO-002 → WO-003 (dependency chain)
-- WO-004 conflicts with WO-001 on same work center
-- WO-004 runs 3 hours longer than expected
+- **No overlapping work** on the same work center (single-threaded machines)
+- **All dependencies satisfied** (dependent work starts AFTER all prerequisites complete)
+- **Work only during shift hours** (no overnight work, no weekend work if no shifts defined)
+- **Maintenance windows respected** (immovable, sacred - regular work flows around them)
+- **No circular dependencies** (DAG validation catches impossible schedules)
 
-**Result**: Algorithm detects conflicts and reschedules WO-001, which cascades to WO-002 and WO-003.
-
-### Scenario 2: Maintenance Conflict
-
-**Setup**:
-- Multiple work orders scheduled on Extrusion Line 2
-- Scheduled maintenance: 1-3 PM
-- WO-102 and WO-103 conflict with maintenance window
-
-**Result**: Work orders rescheduled around maintenance window.
+This validation isn't optional - it's how we PROVE correctness. If validation fails, the system provides actionable feedback explaining exactly WHAT constraint failed and WHY the schedule can't be satisfied.
 
 ---
 
-## 🧪 Testing
+## Test Scenarios
+
+I created 8 comprehensive scenarios to test different aspects of the scheduler.
+
+### Small Scenarios (5-20 work orders - manually verifiable)
+
+These scenarios are small enough to manually verify correctness by inspecting each work order:
+
+1. **Delay Cascade** (`scenario-1-delay-cascade.json`)
+   - Tests: One delayed order triggers chain reaction through dependencies
+   - Validates: Dependency propagation
+
+2. **Maintenance Conflict** (`scenario-2-maintenance-conflict.json`)
+   - Tests: Work flows around immovable maintenance windows
+   - Validates: Maintenance windows are respected (sacred)
+
+3. **Complex Dependencies** (`scenario-3-complex-dependencies.json`)
+   - Tests: Multiple manufacturing orders with interleaved dependencies
+   - Validates: Multi-product workflows with parallel streams
+
+4. **Diamond Dependencies** (`scenario-5-diamond-dependencies.json`)
+   - Tests: A→C, B→C where C waits for BOTH A and B
+   - Validates: Multiple dependencies converging on single work order
+   - Disruption: Part A delayed 2 hours, Assembly must wait for both parts
+
+5. **Impossible Schedule** (`scenario-6-impossible-schedule.json`)
+   - Tests: Circular dependencies, maintenance conflicts, invalid constraints
+   - Validates: Error detection with clear explanations of WHY scheduling fails
+
+6. **Shift Boundary Spanning** (`scenario-7-shift-boundary-spanning.json`)
+   - Tests: Work that pauses at 5 PM, resumes 8 AM next day
+   - Validates: Overnight pausing, weekend handling, multi-day work
+
+7. **Resource Contention** (`scenario-8-resource-contention.json`)
+   - Tests: 8+ work orders competing for same bottleneck work center
+   - Validates: No overlaps, intelligent packing, maintenance flow-around
+
+### Large Scenario (performance testing)
+
+8. **Large-Scale Test** (`scenario-4-large-scale-1000.json`)
+   - Tests: 1,000 work orders with dependencies, conflicts, shift boundaries
+   - Validates: Algorithm scales for production workloads
+   - Performance target: Complete in <30 seconds
+
+---
+
+## Design Decisions & Trade-offs
+
+### 1. Greedy vs. Optimal Scheduling
+
+**What I Chose**: Greedy forward-scheduling (schedule each work order at earliest valid time)
+
+**Why I Chose This**:
+- Simple and understandable - easier to debug and maintain
+- Correct - produces valid schedules that satisfy ALL constraints
+- Fast - O(n log n) for topological sort, O(n) for scheduling
+- Aligns with "correct before intelligent" principle
+- Good enough for most real-world scenarios
+
+**Alternatives I Considered**:
+- Backtracking for optimal solutions - More complex, slower, harder to debug. Optimizes global delay but risks complexity bugs.
+- Constraint programming (CP-SAT solver like Google OR-Tools) - Powerful but adds external dependency and learning curve.
+- Genetic algorithms - Overkill for single-objective constraint satisfaction problem.
+
+**Trade-off Decision**: I chose simplicity and correctness over global optimality. A valid schedule that respects all constraints is more valuable than an "optimized" schedule that violates constraints. Premature optimization is the root of many bugs.
+
+### 2. Topological Sort (Kahn's Algorithm)
+
+**What I Chose**: Kahn's algorithm for topological sorting
+
+**Why It Works**:
+- Work order dependencies form a Directed Acyclic Graph (DAG)
+- Topological sort gives valid linear ordering where prerequisites come first
+- Kahn's algorithm has O(V + E) time complexity - efficient
+- Built-in cycle detection - catches circular dependencies early
+
+**Alternative**: DFS-based topological sort has similar performance, but Kahn's algorithm is more intuitive for level-by-level processing.
+
+### 3. Date Handling with Luxon
+
+**What I Chose**: Luxon library for date calculations
+
+**Why**:
+- Robust timezone support (important for global manufacturing)
+- Handles edge cases: weekends, holidays, DST transitions
+- Immutable date objects prevent accidental mutations
+- Better API than native JavaScript Date
+
+**Alternative**: Manual date math is error-prone and doesn't handle timezones well.
+
+---
+
+## Known Limitations
+
+### 1. Local Optimization
+The greedy approach finds a valid schedule but may not minimize total delay globally. For example, if two orders compete for a work center, the algorithm schedules whichever comes first in topological order, not whichever minimizes downstream impact.
+
+**Future Enhancement**: Implement branch-and-bound or constraint programming for global optimization.
+
+### 2. Shift Simplifications
+Currently assumes uniform shift structure (same hours every weekday). Doesn't handle:
+- Split shifts (morning + evening with lunch break)
+- Varying shift lengths by day (shorter Fridays)
+- Holiday schedules
+
+**Future Enhancement**: Support flexible shift definitions per day.
+
+### 3. No Priority Levels
+All work orders treated equally. Doesn't prioritize:
+- Rush orders with tight due dates
+- High-value customers
+- Critical path items
+
+**Future Enhancement**: Add priority field and use priority queue for scheduling order.
+
+---
+
+## Future Enhancements (@upgrade)
+
+These improvements would enhance the system but weren't critical for proving correctness:
+
+- [ ] **Global Optimization**: Implement branch-and-bound or genetic algorithms for minimal total delay
+- [ ] **Priority Levels**: Support work order priorities (rush orders, due date urgency, customer tier)
+- [ ] **Resource Constraints**: Handle limited resources (operators, materials, tooling)
+- [ ] **Setup Time**: Account for setup/changeover time between different product types
+- [ ] **Multi-Objective Optimization**: Optimize for multiple goals (delay, cost, utilization, due date compliance)
+- [ ] **What-If Analysis**: Simulate different disruption scenarios and compare outcomes
+- [ ] **Optimization Metrics**: Calculate total delay (HIGH priority), orders affected (MEDIUM priority), work center utilization (NICE-TO-HAVE)
+
+---
+
+## Testing
 
 ### Test Coverage
 
-- ✅ **Date Utilities** (17 tests)
-  - Shift boundary calculations
-  - Maintenance overlap detection
-  - Time range operations
-  - Weekend/no-shift handling
+- **Date Utilities** (17 tests): Shift boundary calculations, maintenance overlap detection, time range operations, weekend/no-shift handling
 
-- ✅ **Dependency Resolver** (8 tests)
-  - Graph construction
-  - Cycle detection
-  - Topological sorting
-  - Parent/child relationships
+- **Dependency Resolver** (8 tests): Graph construction, cycle detection, topological sorting, parent/child relationships
 
-- ✅ **Reflow Service** (7 integration tests)
-  - Valid schedules (no changes needed)
-  - Dependency cascades
-  - Work center conflicts
-  - Maintenance windows
-  - Optimization metrics
+- **Reflow Service** (7 integration tests): Valid schedules (no changes needed), dependency cascades, work center conflicts, maintenance windows, optimization metrics
 
 ### Run Tests
 
@@ -210,7 +363,7 @@ npm run test:coverage
 
 ---
 
-## 📁 Project Structure
+## Project Structure
 
 ```
 naologic-schedule-reflow/
@@ -234,7 +387,13 @@ naologic-schedule-reflow/
 │   └── reflow-service.test.ts
 ├── data/
 │   ├── scenario-1-delay-cascade.json
-│   └── scenario-2-maintenance-conflict.json
+│   ├── scenario-2-maintenance-conflict.json
+│   ├── scenario-3-complex-dependencies.json
+│   ├── scenario-4-large-scale-1000.json
+│   ├── scenario-5-diamond-dependencies.json
+│   ├── scenario-6-impossible-schedule.json
+│   ├── scenario-7-shift-boundary-spanning.json
+│   └── scenario-8-resource-contention.json
 ├── package.json
 ├── tsconfig.json
 ├── jest.config.js
@@ -243,43 +402,7 @@ naologic-schedule-reflow/
 
 ---
 
-## 🎓 Key Learnings & Trade-offs
-
-### Design Decisions
-
-1. **Topological Sort (Kahn's Algorithm)**
-   - ✅ Ensures dependencies processed in correct order
-   - ✅ O(V + E) time complexity - efficient
-   - Alternative: DFS-based sorting (similar performance)
-
-2. **Greedy Slot Finding**
-   - ✅ Simple and effective for most cases
-   - ⚠️ May not find globally optimal solution
-   - Trade-off: Simplicity vs. optimality
-
-3. **Shift Calculation with Luxon**
-   - ✅ Robust date handling with timezone support
-   - ✅ Handles edge cases (weekends, holidays, DST)
-   - Alternative: Manual date math (error-prone)
-
-### Known Limitations
-
-1. **Local Optimization**: Algorithm uses greedy approach - finds valid schedule but may not minimize total delay
-2. **Shift Simplifications**: Assumes uniform shift structure; doesn't handle split shifts or varying shift lengths by day
-3. **No Backtracking**: Once a work order is scheduled, it's not reconsidered (future: constraint propagation)
-
-### Future Enhancements (`@upgrade`)
-
-- [ ] **Global Optimization**: Implement branch-and-bound or genetic algorithms for minimal delay
-- [ ] **Priority Levels**: Support work order priorities (rush orders, due date urgency)
-- [ ] **Resource Constraints**: Handle limited resources (operators, materials)
-- [ ] **Setup Time**: Account for setup time between different product types
-- [ ] **Multi-Objective**: Optimize for multiple goals (delay, cost, utilization)
-- [ ] **What-If Analysis**: Simulate different disruption scenarios
-
----
-
-## 💻 Technology Stack
+## Technology Stack
 
 - **Language**: TypeScript 5.3
 - **Runtime**: Node.js 20+
@@ -289,7 +412,7 @@ naologic-schedule-reflow/
 
 ---
 
-## 📝 API Usage
+## API Usage
 
 ```typescript
 import { ReflowService } from './src/core/reflow-service';
@@ -310,42 +433,44 @@ console.log(result.metrics);             // Optimization metrics
 
 ---
 
-## ✅ Requirements Checklist
+## Requirements Checklist
 
 ### Core Requirements
-- ✅ Working reflow algorithm
-- ✅ Handles dependencies (multiple parents supported)
-- ✅ Handles work center conflicts
-- ✅ Shift-aware scheduling (work pauses outside shifts)
-- ✅ Maintenance window support
-- ✅ Sample data (2+ scenarios)
-- ✅ Documentation (README with approach)
-- ✅ TypeScript with proper types
-- ✅ Clean code structure
+- ✓ Working reflow algorithm
+- ✓ Handles dependencies (multiple parents supported)
+- ✓ Handles work center conflicts
+- ✓ Shift-aware scheduling (work pauses outside shifts)
+- ✓ Maintenance window support (sacred, immovable)
+- ✓ Sample data (8 scenarios covering all edge cases)
+- ✓ Documentation (README with approach and trade-offs)
+- ✓ TypeScript with proper types
+- ✓ Clean code structure
 
 ### Bonus Features Implemented
-- ✅ Automated test suite (25+ tests, 70% coverage threshold)
-- ✅ DAG implementation with cycle detection
-- ✅ Topological sorting
-- ✅ Optimization metrics (delay, affected orders, utilization)
-- ✅ Multiple test scenarios (3+ scenarios covered)
-- ✅ Comprehensive documentation with trade-offs
+- ✓ Automated test suite (30+ tests, 70% coverage threshold)
+- ✓ DAG implementation with cycle detection
+- ✓ Topological sorting (Kahn's algorithm)
+- ✓ Comprehensive test scenarios (8 scenarios)
+- ✓ Error detection for impossible schedules
+- ✓ Validation proves correctness
+- ✓ Documentation with explicit trade-offs
 
 ---
 
-## 🎥 Demo Video
+## Demo Video
 
 [Loom video link will be added here]
 
 Video covers:
-- Code walkthrough
-- Running both scenarios
-- Algorithm explanation
-- Output demonstration
+- Problem understanding and ERP context
+- Architecture walkthrough (WHY I chose each approach)
+- Live demos of 3-4 key scenarios
+- Trade-offs and design decisions
+- Validation proof of correctness
 
 ---
 
-## 🙋 Author
+## Author
 
 **Barsharani Jena**
 Email: barsharanijena555@gmail.com
@@ -355,6 +480,6 @@ Date: February 2026
 
 ---
 
-## 📄 License
+## License
 
 MIT License - This is a take-home challenge submission.
