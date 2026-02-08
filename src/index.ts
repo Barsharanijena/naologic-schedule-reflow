@@ -21,11 +21,11 @@ function runScenario(name: string, data: ReflowInput) {
   try {
     const result = service.reflow(data);
 
-    console.log('\n📊 RESULTS:');
+    console.log('\nRESULTS:');
     console.log(result.explanation);
 
     if (result.changes.length > 0) {
-      console.log('\n📝 CHANGES:');
+      console.log('\nCHANGES:');
       result.changes.forEach(change => {
         console.log(`\n  Work Order: ${change.workOrderNumber}`);
         console.log(`  Original: ${change.originalStartDate} → ${change.originalEndDate}`);
@@ -36,7 +36,7 @@ function runScenario(name: string, data: ReflowInput) {
     }
 
     if (result.metrics) {
-      console.log('\n📈 METRICS:');
+      console.log('\nMETRICS:');
       console.log(`  Total Delay: ${result.metrics.totalDelayMinutes} minutes`);
       console.log(`  Orders Affected: ${result.metrics.workOrdersAffected}`);
       console.log(`  Work Center Utilization:`);
@@ -45,15 +45,15 @@ function runScenario(name: string, data: ReflowInput) {
       });
     }
 
-    console.log('\n✅ Schedule is valid!');
+    console.log('\nSchedule is valid!');
   } catch (error) {
-    console.error('\n❌ ERROR:', error instanceof Error ? error.message : error);
+    console.error('\nERROR:', error instanceof Error ? error.message : error);
   }
 }
 
 // Run all scenarios
 function main() {
-  console.log('🚀 Production Schedule Reflow System');
+  console.log('Production Schedule Reflow System');
   console.log('Naologic Backend Engineer Challenge\n');
 
   runScenario('Delay Cascade', delayCascadeData as ReflowInput);
@@ -61,7 +61,7 @@ function main() {
   runScenario('Complex Dependencies with Maintenance', complexDependenciesData as ReflowInput);
 
   console.log('\n' + '='.repeat(80));
-  console.log('All scenarios completed!');
+  console.log('All scenarios completed');
   console.log('='.repeat(80) + '\n');
 }
 
