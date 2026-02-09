@@ -10,7 +10,7 @@
         "startDate": "2026-02-10T08:00:00.000Z",
         "endDate": "2026-02-10T11:00:00.000Z",
         "durationMinutes": 180,
-        "isMaintenance": false,
+        "isMaintenance": true,
         "dependsOnWorkOrderIds": []
       }
     },
@@ -24,7 +24,7 @@
         "startDate": "2026-02-10T11:00:00.000Z",
         "endDate": "2026-02-10T14:00:00.000Z",
         "durationMinutes": 180,
-        "isMaintenance": false,
+        "isMaintenance": true,
         "dependsOnWorkOrderIds": []
       }
     },

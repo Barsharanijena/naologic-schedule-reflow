@@ -457,14 +457,23 @@ console.log(result.metrics);             // Optimization metrics
 
 ---
 
-## Demo Video
+## Demo Videos
 
-[Loom video link will be added here]
+I created a comprehensive video walkthrough of the system:
 
-Video covers:
+### Main Demo Videos
+1. [Overview & Architecture](https://www.loom.com/share/ad7df6d3fc514cf887c30ec3ca6401a0)
+2. [Core Algorithm & Dependency Resolution](https://www.loom.com/share/62afcceeba6f4bce8b65678c9c002f1e)
+3. [Shift-Aware Scheduling & Constraints](https://www.loom.com/share/ffe41c755fc4433185ab34f2f399fbbc)
+4. [Test Scenarios & Validation](https://www.loom.com/share/93f6b28c091b4480898e20f414d0a76a)
+5. [Maintenance Windows & Edge Cases](https://www.loom.com/share/7866c12e36b9430a8ea8d64a70d61069)
+6. [Design Trade-offs & Future Enhancements](https://www.loom.com/share/bc75a2121939465c93364bca19b0395e)
+7. [Performance Testing & Large-Scale Demo](https://www.loom.com/share/b5b954b903b84f8c8e13420065e42a03)
+
+Videos cover:
 - Problem understanding and ERP context
 - Architecture walkthrough (WHY I chose each approach)
-- Live demos of 3-4 key scenarios
+- Live demos of key scenarios
 - Trade-offs and design decisions
 - Validation proof of correctness
 

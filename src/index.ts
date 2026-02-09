@@ -10,6 +10,7 @@ import { ReflowInput } from './types/common-types';
 import delayCascadeData from '../data/scenario-1-delay-cascade.json';
 import maintenanceConflictData from '../data/scenario-2-maintenance-conflict.json';
 import complexDependenciesData from '../data/scenario-3-complex-dependencies.json';
+import shiftBoundaryData from '../data/scenario-7-shift-boundary-spanning.json';
 
 function runScenario(name: string, data: ReflowInput) {
   console.log('\n' + '='.repeat(80));
@@ -59,6 +60,7 @@ function main() {
   runScenario('Delay Cascade', delayCascadeData as ReflowInput);
   runScenario('Maintenance Conflict', maintenanceConflictData as ReflowInput);
   runScenario('Complex Dependencies with Maintenance', complexDependenciesData as ReflowInput);
+  runScenario('Shift Boundary Spanning', shiftBoundaryData as ReflowInput);
 
   console.log('\n' + '='.repeat(80));
   console.log('All scenarios completed');
